@@ -11,8 +11,7 @@ USING:
     specialized-arrays.instances.alien.c-types.void*
     strings
     system
-    unicode.case
-    unicode.categories ;
+    unicode.case unicode.categories ;
 IN: xml2.ffi
 
 << "xml2" {
@@ -76,6 +75,7 @@ STRUCT: xmlNs
     { prefix c-string }
     { private void* }
     { context xmlDoc* } ;
+TYPEDEF: xmlNs* xmlNsPtr
 
 STRUCT: xmlNode
     { _private void* }
@@ -100,7 +100,15 @@ STRUCT: xmlDoc
     { parent xmlNode* }
     { next xmlNode* }
     { prev xmlNode* }
-    { doc xmlDoc* } ;
+    { doc xmlDoc* }
+    { compression int }
+    { standalone int }
+    { intSubset void* }
+    { extSubset void* }
+    { oldNs xmlNsPtr }
+    { version c-string }
+    { encoding c-string } ;
+
 TYPEDEF: xmlDoc* xmlDocPtr
 
 STRUCT: xmlXPathContext
@@ -133,7 +141,6 @@ STRUCT: xmlSAXHandler
     { processingInstruction void* }
     { comment void* } ;
 TYPEDEF: xmlSAXHandler* xmlSAXHandlerPtr
-
 
 STRUCT: xmlParserInputBuffer
     { context void* } ;
@@ -172,34 +179,41 @@ STRUCT: xmlXPathObject
     { nodesetval xmlNodeSetPtr } ;
 TYPEDEF: xmlXPathObject* xmlXPathObjectPtr
 
+! Alphabetical order by return type and function name.
+FUNCTION: htmlParserCtxtPtr htmlCreateMemoryParserCtxt ( char* buffer,
+                                                          int size ) ;
+FUNCTION: htmlParserCtxtPtr htmlNewParserCtxt ( ) ;
 
-
-FUNCTION: void xmlInitParser ( ) ;
 FUNCTION: int xmlPedanticParserDefault ( int ) ;
-FUNCTION: xmlNodePtr xmlDocGetRootElement ( xmlDocPtr ) ;
-FUNCTION: xmlDocPtr xmlReadMemory ( char* buffer,
-                                    int size,
-                                    c-string URL,
-                                    c-string encoding,
-                                    int options ) ;
-FUNCTION: xmlDocPtr xmlReadFile ( c-string filename,
-                                  c-string encoding,
-                                  int options ) ;
-FUNCTION: xmlDocPtr xmlParseFile ( c-string filename ) ;
 FUNCTION: int xmlSaveFormatFileEnc ( c-string filename,
                                      xmlDocPtr cur,
                                      c-string encoding,
                                      int format ) ;
-FUNCTION: xmlXPathContextPtr xmlXPathNewContext ( xmlDocPtr ) ;
-FUNCTION: xmlXPathObjectPtr xmlXPathEvalExpression
-    ( c-string str,
-      xmlXPathContextPtr ctxt ) ;
+
 FUNCTION: xmlDocPtr htmlCtxtReadMemory ( xmlParserCtxtPtr ctxt,
                                          char* buffer,
                                          int size,
                                          char* filename,
                                          char* encoding,
                                          int options ) ;
-FUNCTION: htmlParserCtxtPtr htmlCreateMemoryParserCtxt ( char* buffer,
-                                                          int size ) ;
-FUNCTION: htmlParserCtxtPtr htmlNewParserCtxt ( ) ;
+FUNCTION: xmlDocPtr xmlNewDoc ( c-string version ) ;
+FUNCTION: xmlDocPtr xmlParseFile ( c-string filename ) ;
+FUNCTION: xmlDocPtr xmlReadFile ( c-string filename,
+                                  c-string encoding,
+                                  int options ) ;
+FUNCTION: xmlDocPtr xmlReadMemory ( char* buffer,
+                                    int size,
+                                    c-string URL,
+                                    c-string encoding,
+                                    int options ) ;
+
+FUNCTION: xmlNodePtr xmlDocGetRootElement ( xmlDocPtr doc ) ;
+FUNCTION: xmlNodePtr xmlNewDocNode ( xmlDocPtr doc,
+                                     xmlNsPtr ns,
+                                     c-string name,
+                                     c-string content ) ;
+
+FUNCTION: xmlXPathContextPtr xmlXPathNewContext ( xmlDocPtr doc ) ;
+FUNCTION: xmlXPathObjectPtr xmlXPathEvalExpression ( c-string str,
+                                                     xmlXPathContextPtr ctxt ) ;
+FUNCTION: void xmlInitParser ( ) ;
