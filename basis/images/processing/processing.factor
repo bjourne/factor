@@ -12,7 +12,7 @@ IN: images.processing
 : each^2 ( m quot -- m' ) '[ _ each ] each ; inline
 
 : matrix-dim ( m -- dim ) [ length ] [ first length ] bi 2array ;
-    
+
 : matrix>image ( m -- image )
     <image> over matrix-dim >>dim
     swap flip flatten
@@ -26,7 +26,7 @@ IN: images.processing
 :: image-offset ( x,y image -- xy )
     image dim>> first
     x,y second * x,y first + ;
-        
+
 :: draw-grey ( value x,y image -- )
     x,y image image-offset 3 * { 0 1 2 }
     [
@@ -37,4 +37,11 @@ IN: images.processing
     x,y image image-offset 3 * color-id + value >fixnum
     swap image bitmap>> set-nth ;
 
-! : matrix. ( m -- ) 10 matrix-zoom matrix>image image. ;
+: pixels ( image -- seq )
+    [ bitmap>> ] keep bytes-per-pixel <groups> ;
+
+: coordinates ( image -- seq )
+    dim>> coord-matrix flip concat ;
+
+: map-image ( image quot -- image' )
+    [ dup [ coordinates ] [ pixels ] bi ] dip 2map concat >>bitmap ; inline
