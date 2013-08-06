@@ -287,7 +287,7 @@ source/docs/tests file. When set to false, you'll be asked only once."
   (factor-second-word-regex
    '("IN:" "USE:" "FROM:" "EXCLUDE:" "QUALIFIED:" "QUALIFIED-WITH:")))
 
-(defconst factor-using-lines-regex "^\\(USING\\):[ \n]+\\([^;]+\\);")
+(defconst factor-using-lines-regex "^\\(USING\\):[ \n]+\\([^;]*\\);")
 
 (defconst factor-int-constant-def-regex
   (factor-second-word-regex '("ALIEN:" "CHAR:" "NAN:")))
@@ -839,6 +839,9 @@ With prefix, non-existing files will be created."
   (setq-local parse-sexp-ignore-comments t)
   (setq-local parse-sexp-lookup-properties t)
   (setq-local font-lock-defaults '(factor-font-lock-keywords nil nil nil nil))
+
+  ;; Some syntactic constructs are often split over multiple lines so
+  ;; we need to setup multiline font-lock.
 
   (define-key factor-mode-map [remap ff-get-other-file]
     'factor-visit-other-file)
