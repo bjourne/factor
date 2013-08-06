@@ -200,7 +200,7 @@ source/docs/tests file. When set to false, you'll be asked only once."
   '(":" "::" ";" "&:" "<<" "<PRIVATE" ">>"
     "ABOUT:" "AFTER:" "ALIAS:" "ALIEN:" "ARTICLE:"
     "B" "BEFORE:"
-    "C:" "CALLBACK:" "C-GLOBAL:" "C-TYPE:" "CHAR:" "COM-INTERFACE:" "CONSTANT:"
+    "C:" "CALLBACK:" "C-GLOBAL:" "C-TYPE:" "CHAR:" "COLOR:" "COM-INTERFACE:" "CONSTANT:"
     "CONSULT:" "call-next-method"
     "DEFER:" "DESTRUCTOR:"
     "EBNF:" ";EBNF" "ENUM:" "ERROR:" "EXCLUDE:"
@@ -287,7 +287,7 @@ source/docs/tests file. When set to false, you'll be asked only once."
   (factor-second-word-regex
    '("IN:" "USE:" "FROM:" "EXCLUDE:" "QUALIFIED:" "QUALIFIED-WITH:")))
 
-(defconst factor-using-lines-regex "^\\(USING\\):[ \n]+\\([^;]*\\);")
+(defconst factor-using-lines-regex "^\\(USING\\):[ \n\t]+\\([^;]*\\);")
 
 (defconst factor-int-constant-def-regex
   (factor-second-word-regex '("ALIEN:" "CHAR:" "NAN:")))
@@ -300,11 +300,11 @@ source/docs/tests file. When set to false, you'll be asked only once."
 (defconst factor-error-regex
   (factor-second-word-regex '("ERROR:")))
 
-(defconst factor-simple-tuple-decl-regex
-  "\\(TUPLE\\):\\s-+\\(\\w+\\)\\s-+\\([^;]+\\);")
+;; (defconst factor-simple-tuple-decl-regex
+;;   "\\(TUPLE\\):[ \n\t]+\\(\\w+\\)[ \n\t]+\\([^;]+\\);")
 
-(defconst factor-subclassed-tuple-decl-regex
-  "\\(TUPLE\\):\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-+<\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-+\\([^;]+\\);")
+;; (defconst factor-subclassed-tuple-decl-regex
+;;   "\\(TUPLE\\):[ \n\t]++\\(\\(?:\\sw\\|\\s_\\)+\\)[ \n\t]+<[ \n\t]+\\(\\(?:\\sw\\|\\s_\\)+\\)[ \n\t]+\\([^;]+\\);")
 
 (defconst factor-constructor-regex
   "<[^ >]+>")
@@ -475,13 +475,13 @@ source/docs/tests file. When set to false, you'll be asked only once."
                                      (2 'factor-font-lock-word))
 
     ;; Order is important, otherwise "<" will be colorized as a slot.
-    (,factor-subclassed-tuple-decl-regex (1 'factor-font-lock-parsing-word)
-                                         (2 'factor-font-lock-type-name)
-                                         (3 'factor-font-lock-type-name)
-                                         (4 'factor-font-lock-symbol))
-    (,factor-simple-tuple-decl-regex (1 'factor-font-lock-parsing-word)
-                                     (2 'factor-font-lock-type-name)
-                                     (3 'factor-font-lock-symbol))
+    ;; (,factor-subclassed-tuple-decl-regex (1 'factor-font-lock-parsing-word)
+    ;;                                      (2 'factor-font-lock-type-name)
+    ;;                                      (3 'factor-font-lock-type-name)
+    ;;                                      (4 'factor-font-lock-symbol))
+    ;; (,factor-simple-tuple-decl-regex (1 'factor-font-lock-parsing-word)
+    ;;                                  (2 'factor-font-lock-type-name)
+    ;;                                  (3 'factor-font-lock-symbol))
 
     (,factor-constructor-regex . 'factor-font-lock-constructor)
     (,factor-setter-regex . 'factor-font-lock-setter-word)
@@ -493,7 +493,30 @@ source/docs/tests file. When set to false, you'll be asked only once."
     (,factor-constant-words-regex . 'factor-font-lock-constant)
     (,factor-parsing-words-regex . 'factor-font-lock-parsing-word)))
 
-
+;; Handling of multi-line constructs
+(defun factor-font-lock-extend-region ()
+  "Extend the search region to include an entire block of text."
+  ;; Avoid compiler warnings about these global variables from font-lock.el.
+  ;; See the documentation for variable `font-lock-extend-region-functions'.
+  (eval-when-compile (defvar font-lock-beg) (defvar font-lock-end))
+  (save-excursion
+    (goto-char font-lock-beg)
+    (let ((found (or (re-search-backward "\n\n" nil t) (point-min))))
+      (goto-char font-lock-end)
+      (when (re-search-forward "\n\n" nil t)
+        (beginning-of-line)
+        (setq font-lock-end (point)))
+      (setq font-lock-beg found))))
+
+;; Handles complex slot declarations in tuples.
+(defun factor-match-next-slot (limit)
+  ;; The regexp finds the start of the tuples slot declarations.
+  (when (re-search-forward "TUPLE:[\s\n\t]+\\sw+\\(?:[\s\n\t]+<[\s\n\t]+\\sw+\\)?" limit t)
+    (let ((beg (match-end 0)))
+      (set-match-data (list beg (+ 20 beg)))
+      t))
+  )
+
 ;;; Source code analysis:
 
 (defsubst factor-brackets-depth ()
@@ -838,10 +861,19 @@ With prefix, non-existing files will be created."
   (setq-local comment-start-skip "!+ *")
   (setq-local parse-sexp-ignore-comments t)
   (setq-local parse-sexp-lookup-properties t)
-  (setq-local font-lock-defaults '(factor-font-lock-keywords nil nil nil nil))
+  ;; Basic font lock
+  (setq-local font-lock-defaults '(factor-font-lock-keywords))
 
+  ;; (setq-local font-lock-defaults '(factor-font-lock-keywords nil nil nil nil))
+  ;; Some functions are needed too.
+  (font-lock-add-keywords
+   'factor-mode
+   '((factor-match-next-slot 0 'factor-font-lock-number)))
   ;; Some syntactic constructs are often split over multiple lines so
   ;; we need to setup multiline font-lock.
+  (setq-local font-lock-multiline t)
+  ;; Any better way than using a hook?
+  (add-hook 'font-lock-extend-region-functions 'factor-font-lock-extend-region)
 
   (define-key factor-mode-map [remap ff-get-other-file]
     'factor-visit-other-file)
