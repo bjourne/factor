@@ -322,13 +322,13 @@ source/docs/tests file. When set to false, you'll be asked only once."
 (defconst factor-sub-vocab-regex "^<\\([^ \n]+\\) *$")
 
 (defconst factor-alien-function-regex
-  "\\_<FUNCTION: +\\(\\w+\\)[\n ]+\\(\\w+\\)")
+  "\\_<FUNCTION:[ \n]+\\(\\(?:\\sw\\|\\s_\\)+\\)[ \n]+\\(\\(?:\\sw\\|\\s_\\)+\\)")
 
 (defconst factor-alien-function-alias-regex
   "\\_<FUNCTION-ALIAS: +\\(\\w+\\)[\n ]+\\(\\w+\\)[\n ]+\\(\\w+\\)")
 
 (defconst factor-alien-callback-regex
-  "\\_<CALLBACK: +\\(\\w+\\) +\\(\\w+\\)")
+  "\\_<CALLBACK:[ \n]+\\(\\(?:\\sw\\|\\s_\\)+\\)[ \n]+\\(\\(?:\\sw\\|\\s_\\)+\\)")
 
 (defconst factor-indent-def-starts
   '("" ":"
@@ -409,7 +409,7 @@ source/docs/tests file. When set to false, you'll be asked only once."
   "\\_<TYPEDEF: +\\(\\w+\\) +\\(\\w+\\)\\( .*\\)?$")
 
 (defconst factor-c-global-regex
-  "\\_<C-GLOBAL: +\\(\\w+\\) +\\(\\w+\\)\\( .*\\)?$")
+  "\\_<C-GLOBAL:[ \n]+\\(\\(?:\\sw\\|\\s_\\)+\\)[ \n]+\\(\\(?:\\sw\\|\\s_\\)+\\)\\( .*\\)?$")
 
 (defconst factor-c-type-regex
   "\\_<C-TYPE: +\\(\\w+\\)\\( .*\\)?$")
