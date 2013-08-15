@@ -13,6 +13,7 @@
 
 ;;; Code:
 
+(require 'font-lock)
 (require 'fuel-stack)
 (require 'fuel-completion)
 (require 'fuel-eval)
@@ -266,6 +267,7 @@ the vocabulary name."
   (setq-local comint-use-prompt-regexp nil)
   (setq-local comint-prompt-read-only fuel-listener-prompt-read-only-p)
   (fuel-listener--setup-completion)
+  (setq-local font-lock-defaults '(factor-font-lock-keywords))
   (fuel-listener--setup-stack-mode))
 
 (define-key fuel-listener-mode-map "\C-a" 'fuel-listener--bol)
