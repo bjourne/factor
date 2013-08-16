@@ -197,23 +197,22 @@ source/docs/tests file. When set to false, you'll be asked only once."
     "C:" "CALLBACK:" "C-GLOBAL:" "C-TYPE:" "CHAR:" "COLOR:" "COM-INTERFACE:" "CONSTANT:"
     "CONSULT:" "call-next-method"
     "DEFER:" "DESTRUCTOR:"
-    "EBNF:" ";EBNF" "ENUM:" "ERROR:" "EXCLUDE:"
-    "FORGET:" "FROM:" "FUNCTION:" "FUNCTION-ALIAS:"
+    "EBNF:" ";EBNF" "ENUM:" "ERROR:"
+    "FORGET:" "FUNCTION:" "FUNCTION-ALIAS:"
     "GAME:" "GENERIC#" "GENERIC:"
     "GLSL-SHADER:" "GLSL-PROGRAM:"
     "HELP:" "HINTS:" "HOOK:"
-    "IN:" "initial:" "INSTANCE:" "INTERSECTION:"
+    "initial:" "INSTANCE:" "INTERSECTION:"
     "LIBRARY:"
     "M:" "M::" "MACRO:" "MACRO::" "MAIN:" "MATH:"
     "MEMO:" "MEMO:" "METHOD:" "MIXIN:"
     "NAN:"
     "POSTPONE:" "PREDICATE:" "PRIMITIVE:" "PRIVATE>" "PROTOCOL:" "PROVIDE:"
-    "QUALIFIED-WITH:" "QUALIFIED:"
     "read-only" "RENAME:" "REQUIRE:"  "REQUIRES:"
     "SINGLETON:" "SINGLETONS:" "SLOT:" "SPECIALIZED-ARRAY:"
     "SPECIALIZED-ARRAYS:" "STRING:" "STRUCT:" "SYMBOLS:" "SYNTAX:"
     "TYPEDEF:" "TYPED:" "TYPED::"
-    "UNIFORM-TUPLE:" "UNION:" "UNION-STRUCT:" "USE:"
+    "UNIFORM-TUPLE:" "UNION:" "UNION-STRUCT:"
     "VARIANT:" "VERTEX-FORMAT:"))
 
 (defconst factor-parsing-words-regex
@@ -278,8 +277,13 @@ source/docs/tests file. When set to false, you'll be asked only once."
   "^ALIAS: +\\(\\_<.+?\\_>\\) +\\(\\_<.+?\\_>\\)")
 
 (defconst factor-vocab-ref-regex
-  (factor-second-word-regex
-   '("IN:" "USE:" "FROM:" "EXCLUDE:" "QUALIFIED:" "QUALIFIED-WITH:")))
+  (format "\\(%s\\)[ \n]+\\([^ \r\n]+\\)"
+          (regexp-opt '("IN:"
+                        "USE:"
+                        "FROM:"
+                        "EXCLUDE:"
+                        "QUALIFIED:"
+                        "QUALIFIED-WITH:"))))
 
 (defconst factor-using-lines-regex "^\\(USING\\):[ \n]+\\([^;\t]*\\);")
 
@@ -430,8 +434,8 @@ source/docs/tests file. When set to false, you'll be asked only once."
                                         (3 'factor-font-lock-word))
     (,factor-alien-callback-regex (1 'factor-font-lock-type-name)
                                   (2 'factor-font-lock-word))
-    (,factor-vocab-ref-regex 2 'factor-font-lock-vocabulary-name)
-
+    (,factor-vocab-ref-regex (1 'factor-font-lock-parsing-word)
+                             (2 'factor-font-lock-vocabulary-name))
     (,factor-using-lines-regex (1 'factor-font-lock-parsing-word)
                                (2 'factor-font-lock-vocabulary-name))
 
