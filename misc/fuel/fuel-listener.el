@@ -259,6 +259,17 @@ the vocabulary name."
   (interactive)
   (when (= (point) (comint-bol)) (beginning-of-line)))
 
+;;; Font lock:
+
+;; Only a subset of the regexps from factor-mode.el is used
+
+(defconst fuel-listener-font-lock-keywords
+  `((,factor-integer-regex . 'factor-font-lock-number)
+    (,factor-float-regex . 'factor-font-lock-number)
+    (,factor-ratio-regex . 'factor-font-lock-ratio)
+    (,factor-constant-words-regex . 'factor-font-lock-constant)
+    (,factor-brace-words-regex 1 'factor-font-lock-parsing-word)))
+
 ;;;###autoload
 (define-derived-mode fuel-listener-mode comint-mode "Fuel Listener"
   "Major mode for interacting with an inferior Factor listener process.
@@ -267,7 +278,7 @@ the vocabulary name."
   (setq-local comint-use-prompt-regexp nil)
   (setq-local comint-prompt-read-only fuel-listener-prompt-read-only-p)
   (fuel-listener--setup-completion)
-  (setq-local font-lock-defaults '(factor-font-lock-keywords))
+  (setq-local font-lock-defaults '(fuel-listener-font-lock-keywords))
   (fuel-listener--setup-stack-mode))
 
 (define-key fuel-listener-mode-map "\C-a" 'fuel-listener--bol)
