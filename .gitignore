@@ -5,6 +5,7 @@ _darcs
 *.o
 *.s
 *.exe
+*.exe.manifest
 Factor/factor
 *.a
 *.dll
@@ -32,3 +33,6 @@ build-support/wordsize
 checksums.txt
 *.so
 a.out
+build/
+waf-*/
+.lock*
