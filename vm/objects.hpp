@@ -106,6 +106,8 @@ enum special_object {
 
   OBJ_SIGNAL_PIPE = 74, /* file descriptor for pipe used to communicate signals
                            only used on unix */
+  OBJ_INSTALL_PREFIX = 75 /* System prefix used to figure out where the standard
+                             library is */
 };
 
 /* save-image-and-exit discards special objects that are filled in on startup

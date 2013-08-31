@@ -152,6 +152,8 @@ void factor_vm::init_factor(vm_parameters* p) {
   special_objects[OBJ_EMBEDDED] = false_object;
   special_objects[OBJ_VM_COMPILER] =
       allot_alien(false_object, (cell)FACTOR_COMPILER_VERSION);
+  special_objects[OBJ_INSTALL_PREFIX] =
+      allot_alien(false_object, (cell)INSTALL_PREFIX);
 
   /* We can GC now */
   gc_off = false;
