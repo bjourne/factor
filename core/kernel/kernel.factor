@@ -357,6 +357,8 @@ CONSTANT: OBJ-VM-COMPILE-TIME 75
 CONSTANT: OBJ-VM-VERSION 76
 CONSTANT: OBJ-VM-GIT-LABEL 77
 
+CONSTANT: OBJ-INSTALL-PREFIX 78
+
 ! Context object count and identifiers must be kept in sync with:
 !   vm/contexts.hpp
 

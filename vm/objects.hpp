@@ -109,6 +109,9 @@ enum special_object {
   OBJ_VM_COMPILE_TIME = 75, /* when the binary was built */
   OBJ_VM_VERSION = 76, /* factor version */
   OBJ_VM_GIT_LABEL = 77, /* git label (git describe --all --long) */
+
+  OBJ_INSTALL_PREFIX = 78 /* System prefix used to figure out where the standard
+                             library is */
 };
 
 /* save-image-and-exit discards special objects that are filled in on startup
