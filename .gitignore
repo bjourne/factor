@@ -14,6 +14,7 @@ Factor/factor
 *.res
 *.RES
 *.factor.image
+*.waf*
 factor.image.fresh
 *.dylib
 factor
