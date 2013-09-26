@@ -188,10 +188,9 @@ IN: io.directories.tests
 
 [ ] [ "copy-tree-test" temp-file delete-tree ] unit-test
 
-! Ok for this test to fail if "resource:" is a system directory.
 [ ] [
-    [ "resource:deleteme" touch-file ] [ drop ] recover
+    [ "deleteme" touch-file ] with-temp-directory
 ] unit-test
 [ ] [
-    [ "resource:deleteme" delete-file ] [ drop ] recover
+    [ "deleteme" delete-file ] with-temp-directory
 ] unit-test
