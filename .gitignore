@@ -37,3 +37,4 @@ a.out
 build/
 waf-*/
 .lock*
+*.pyc
