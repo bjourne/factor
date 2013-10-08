@@ -9,9 +9,23 @@
 #define _REENTRANT
 #endif
 
-#include <errno.h>
+#if defined(_MSC_VER)
+#define WINDOWS
+#define WINNT
+#elif defined(WIN32) || defined(__MINGW32__)
+#define WINDOWS
+#endif
+
+/* This define needs to come early to have effect on all Windows API:s
+   with wchar variants. */
+#ifdef WINDOWS
+#define UNICODE
+#define _UNICODE
+#endif
 
 /* C headers */
+#include <errno.h>
+
 #include <fcntl.h>
 #include <limits.h>
 #include <math.h>
@@ -68,13 +82,6 @@
 #define FACTOR_PPC
 #else
 #error "Unsupported architecture"
-#endif
-
-#if defined(_MSC_VER)
-#define WINDOWS
-#define WINNT
-#elif defined(WIN32)
-#define WINDOWS
 #endif
 
 /* Forward-declare this since it comes up in function prototypes */
