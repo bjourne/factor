@@ -8,10 +8,6 @@
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x0501  // For AddVectoredExceptionHandler
 
-#ifndef UNICODE
-#define UNICODE
-#endif
-
 #include <windows.h>
 #include <shellapi.h>
 
