@@ -9,6 +9,7 @@ CONSTANT: MAX_UNICODE_PATH 32768
     { "advapi32"    "advapi32.dll"       stdcall }
     { "gdi32"       "gdi32.dll"          stdcall }
     { "user32"      "user32.dll"         stdcall }
+    { "crypt32"     "crypt32.dll"        stdcall }
     { "kernel32"    "kernel32.dll"       stdcall }
     { "winsock"     "ws2_32.dll"         stdcall }
     { "mswsock"     "mswsock.dll"        stdcall }
