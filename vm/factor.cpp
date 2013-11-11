@@ -90,8 +90,10 @@ void factor_vm::init_parameters_from_args(vm_parameters* p, int argc,
   }
 }
 
-/* Compile code in boot image so that we can execute the startup quotation */
-/* Allocates memory */
+/**
+ * Compile code in boot image so that we can execute the startup quotation
+ * Allocates memory
+ */
 void factor_vm::prepare_boot_image() {
   std::cout << "*** Stage 2 early init... " << std::flush;
 

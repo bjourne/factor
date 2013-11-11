@@ -16,8 +16,10 @@ void factor_vm::deallocate_inline_cache(cell return_address) {
     code->free(old_block);
 }
 
-/* Figure out what kind of type check the PIC needs based on the methods
-   it contains */
+/**
+ * Figure out what kind of type check the PIC needs based on the methods
+ * it contains
+ */
 cell factor_vm::determine_inline_cache_type(array* cache_entries) {
   bool seen_tuple = false;
 
@@ -128,7 +130,9 @@ code_block* factor_vm::compile_inline_cache(fixnum index, cell generic_word_,
   return code;
 }
 
-/* A generic word's definition performs general method lookup. */
+/**
+ * A generic word's definition performs general method lookup.
+ */
 void* factor_vm::megamorphic_call_stub(cell generic_word) {
   return untag<word>(generic_word)->entry_point;
 }

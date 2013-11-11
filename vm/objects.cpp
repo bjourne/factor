@@ -59,7 +59,9 @@ cell factor_vm::clone_object(cell obj_) {
 /* Allocates memory */
 void factor_vm::primitive_clone() { ctx->replace(clone_object(ctx->peek())); }
 
-/* Size of the object pointed to by a tagged pointer */
+/**
+ * Size of the object pointed to by a tagged pointer
+ */
 cell factor_vm::object_size(cell tagged) {
   if (immediate_p(tagged))
     return 0;

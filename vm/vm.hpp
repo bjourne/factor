@@ -46,10 +46,14 @@ struct factor_vm {
   /* Stack of callback IDs */
   std::vector<int> callback_ids;
 
-  /* Next callback ID */
+  /**
+   * Next callback ID
+   */
   int callback_id;
 
-  /* List of callback function descriptors for PPC */
+  /**
+   * List of callback function descriptors for PPC
+   */
   std::list<void**> function_descriptors;
 
   /* Pooling unused contexts to make context allocation cheaper */
