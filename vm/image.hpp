@@ -8,26 +8,47 @@ struct embedded_image_footer {
   cell image_offset;
 };
 
+/**
+ * File header data for a Factor image.
+ */
 struct image_header {
   cell magic;
   cell version;
-  /* base address of data heap when image was saved */
+  /**
+   * base address of data heap when image was saved
+   */
   cell data_relocation_base;
-  /* size of heap */
+  /**
+   * size of heap
+   */
   cell data_size;
-  /* base address of code heap when image was saved */
+  /**
+   * base address of code heap when image was saved
+   */
   cell code_relocation_base;
-  /* size of code heap */
+  /**
+   * size of code heap
+   */
   cell code_size;
-  /* tagged pointer to t singleton */
+  /**
+   * tagged pointer to t singleton
+   */
   cell true_object;
-  /* tagged pointer to bignum 0 */
+  /**
+   * tagged pointer to bignum 0
+   */
   cell bignum_zero;
-  /* tagged pointer to bignum 1 */
+  /**
+   * tagged pointer to bignum 1
+   */
   cell bignum_pos_one;
-  /* tagged pointer to bignum -1 */
+  /**
+    * tagged pointer to bignum -1
+    */
   cell bignum_neg_one;
-  /* Initial user environment */
+  /**
+   * Initial user environment
+   */
   cell special_objects[special_object_count];
 };
 

@@ -119,8 +119,10 @@ struct object {
 
   template <typename Iterator> void each_slot(Iterator& iter);
 
-  /* Only valid for objects in tenured space; must cast to free_heap_block
-     to do anything with it if its free */
+  /**
+   * Only valid for objects in tenured space; must cast to free_heap_block to
+   * do anything with it if its free
+   */
   bool free_p() const { return (header & 1) == 1; }
 
   cell type() const { return (header >> 2) & TAG_MASK; }
@@ -140,7 +142,9 @@ struct object {
   void forward_to(object* pointer) { header = ((cell)pointer | 2); }
 };
 
-/* Assembly code makes assumptions about the layout of this struct */
+/**
+ * Assembly code makes assumptions about the layout of this struct
+ */
 struct array : public object {
   static const cell type_number = ARRAY_TYPE;
   static const cell element_size = sizeof(cell);
@@ -150,15 +154,23 @@ struct array : public object {
   cell* data() const { return (cell*)(this + 1); }
 };
 
-/* These are really just arrays, but certain elements have special
-   significance */
+/**
+ * These are really just arrays, but certain elements have special
+ * significance
+ */
 struct tuple_layout : public array {
   NO_TYPE_CHECK;
-  /* tagged */
+  /**
+   * tagged
+   */
   cell klass;
-  /* tagged fixnum */
+  /**
+   * tagged fixnum
+   */
   cell size;
-  /* tagged fixnum */
+  /**
+   * tagged fixnum
+   */
   cell echelon;
 };
 
@@ -294,9 +306,13 @@ struct alien : public object {
 
 struct dll : public object {
   static const cell type_number = DLL_TYPE;
-  /* tagged byte array holding a C string */
+  /**
+   * tagged byte array holding a C string
+   */
   cell path;
-  /* OS-specific handle */
+  /**
+   * OS-specific handle
+   */
   void* handle;
 };
 

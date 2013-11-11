@@ -22,21 +22,29 @@ struct context {
   void* callstack_top;
   void* callstack_bottom;
 
-  /* current datastack top pointer */
+  /**
+   * current datastack top pointer
+   */
   cell datastack;
 
-  /* current retain stack top pointer */
+  /**
+   * current retain stack top pointer
+   */
   cell retainstack;
 
-  /* C callstack pointer */
+  /**
+   * C callstack pointer
+   */
   cell callstack_save;
 
   segment* datastack_seg;
   segment* retainstack_seg;
   segment* callstack_seg;
 
-  /* context-specific special objects, accessed by context-object and
-     set-context-object primitives */
+  /**
+   * context-specific special objects, accessed by context-object and
+   * set-context-object primitives
+   */
   cell context_objects[context_object_count];
 
   context(cell datastack_size, cell retainstack_size, cell callstack_size);

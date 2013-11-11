@@ -66,6 +66,9 @@ inline void factor_vm::iterate_callstack(context* ctx, Iterator& iterator,
   }
 }
 
+/**
+ * applies an iterator to each call frame in the call stack.
+ **/
 template <typename Iterator>
 inline void factor_vm::iterate_callstack(context* ctx, Iterator& iterator) {
   no_fixup none;

@@ -2,8 +2,10 @@
 
 namespace factor {
 
-/* Compile a word definition with the non-optimizing compiler. */
-/* Allocates memory */
+/**
+ * Compile a word definition with the non-optimizing compiler.
+ * Allocates memory
+ */
 void factor_vm::jit_compile_word(cell word_, cell def_, bool relocating) {
   data_root<word> word(word_, this);
   data_root<quotation> def(def_, this);

@@ -212,6 +212,9 @@ struct stack_frame_printer {
   }
 };
 
+/**
+ * prints the call stack to stdout.
+ */
 void factor_vm::print_callstack() {
   std::cout << "==== CALL STACK:" << std::endl;
   if (ctx) {
