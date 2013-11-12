@@ -127,10 +127,12 @@ struct update_word_references_relocation_visitor {
   }
 };
 
-/* Relocate new code blocks completely; updating references to literals,
-   dlsyms, and words. For all other words in the code heap, we only need
-   to update references to other words, without worrying about literals
-   or dlsyms. */
+/**
+ * Relocate new code blocks completely; updating references to
+ * literals, dlsyms, and words. For all other words in the code heap,
+ * we only need to update references to other words, without worrying
+ * about literals or dlsyms.
+ */
 void factor_vm::update_word_references(code_block* compiled,
                                        bool reset_inline_caches) {
   if (code->uninitialized_p(compiled))
@@ -152,7 +154,10 @@ void factor_vm::update_word_references(code_block* compiled,
   }
 }
 
-/* Look up an external library symbol referenced by a compiled code block */
+/**
+ * Look up an external library symbol referenced by a compiled code
+ * block.
+ */
 cell factor_vm::compute_dlsym_address(array* parameters, cell index) {
   cell symbol = array_nth(parameters, index);
   cell library = array_nth(parameters, index + 1);
@@ -332,7 +337,9 @@ struct initial_code_block_visitor {
   }
 };
 
-/* Perform all fixups on a code block */
+/**
+ * Perform all fixups on a code block
+ */
 void factor_vm::initialize_code_block(code_block* compiled, cell literals) {
   initial_code_block_visitor visitor(this, literals);
   compiled->each_instruction_operand(visitor);
@@ -475,8 +482,11 @@ struct find_symbol_at_address_visitor {
   }
 };
 
-/* References to undefined symbols are patched up to call this function on
-   image load. It finds the symbol and library, and throws an error. */
+/**
+ * References to undefined symbols are patched up to call this
+ * function on image load. It finds the symbol and library, and
+ * throws an error.
+ */
 void factor_vm::undefined_symbol() {
   void* frame = ctx->callstack_top;
   void* return_address = frame_return_address(frame);

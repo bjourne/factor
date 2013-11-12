@@ -10,40 +10,60 @@ struct factor_vm {
   //   basis/vm/vm.factor
   //   basis/compiler/constants/constants.factor
 
-  /* Current context */
+  /**
+   * Current context
+   */
   context* ctx;
 
-  /* Spare context -- for callbacks */
+  /**
+   * Spare context -- for callbacks
+   */
   context* spare_ctx;
 
-  /* New objects are allocated here */
+  /**
+   * New objects are allocated here
+   */
   nursery_space nursery;
 
-  /* Add this to a shifted address to compute write barrier offsets */
+  /**
+   * Add this to a shifted address to compute write barrier offsets
+   */
   cell cards_offset;
   cell decks_offset;
 
-  /* cdecl signal handler address, used by signal handler subprimitives */
+  /**
+   * cdecl signal handler address, used by signal handler subprimitives
+   */
   cell signal_handler_addr;
 
-  /* are we handling a memory error? used to detect double faults */
+  /**
+   * are we handling a memory error? used to detect double faults
+   */
   cell faulting_p;
 
-  /* Various special objects, accessed by special-object and
-	set-special-object primitives */
+  /**
+   * Various special objects, accessed by special-object and
+   * set-special-object primitives
+   */
   cell special_objects[special_object_count];
 
   // THESE FIELDS ARE ACCESSED DIRECTLY FROM FACTOR.
   // ^^^^^^
   //
 
-  /* Handle to the main thread we run in */
+  /**
+   * Handle to the main thread we run in
+   */
   THREADHANDLE thread;
 
-  /* Data stack and retain stack sizes */
+  /**
+   * Data stack and retain stack sizes
+   */
   cell datastack_size, retainstack_size, callstack_size;
 
-  /* Stack of callback IDs */
+  /**
+   * Stack of callback IDs
+   */
   std::vector<int> callback_ids;
 
   /**
@@ -56,19 +76,29 @@ struct factor_vm {
    */
   std::list<void**> function_descriptors;
 
-  /* Pooling unused contexts to make context allocation cheaper */
+  /**
+   * Pooling unused contexts to make context allocation cheaper
+   */
   std::list<context*> unused_contexts;
 
-  /* Active contexts, for tracing by the GC */
+  /**
+   * Active contexts, for tracing by the GC
+   */
   std::set<context*> active_contexts;
 
-  /* Canonical truth value. In Factor, 't' */
+  /**
+   * Canonical truth value. In Factor, 't'
+   */
   cell true_object;
 
-  /* External entry points */
+  /**
+   * External entry points
+   */
   c_to_factor_func_type c_to_factor_func;
 
-  /* Is profiling enabled? */
+  /**
+   * Is profiling enabled?
+   */
   volatile cell sampling_profiler_p;
   fixnum samples_per_second;
 
@@ -87,7 +117,9 @@ struct factor_vm {
   std::vector<profiling_sample> samples;
   std::vector<cell> sample_callstacks;
 
-  /* GC is off during heap walking */
+  /**
+   * GC is off during heap walking
+   */
   bool gc_off;
 
   /* Data heap */
@@ -103,13 +135,17 @@ struct factor_vm {
   gc_state* current_gc;
   volatile cell current_gc_p;
 
-  /* Set if we're in the jit */
+  /**
+   * Set if we're in the jit
+   */
   volatile fixnum current_jit_count;
 
   /* Mark stack */
   std::vector<cell> mark_stack;
 
-  /* If not NULL, we push GC events here */
+  /**
+   * If not NULL, we push GC events here
+   */
   std::vector<gc_event>* gc_events;
 
   /* If a runtime function needs to call another function which potentially
@@ -131,10 +167,14 @@ struct factor_vm {
   cell bignum_pos_one;
   cell bignum_neg_one;
 
-  /* Method dispatch statistics */
+  /**
+   * Method dispatch statistics
+   */
   dispatch_statistics dispatch_stats;
 
-  /* Number of entries in a polymorphic inline cache */
+  /**
+   * Number of entries in a polymorphic inline cache
+   */
   cell max_pic_size;
 
   /* Incrementing object counter for identity hashing */

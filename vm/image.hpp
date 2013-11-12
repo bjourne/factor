@@ -43,8 +43,8 @@ struct image_header {
    */
   cell bignum_pos_one;
   /**
-    * tagged pointer to bignum -1
-    */
+   * tagged pointer to bignum -1
+   */
   cell bignum_neg_one;
   /**
    * Initial user environment
@@ -52,6 +52,9 @@ struct image_header {
   cell special_objects[special_object_count];
 };
 
+/**
+ * Configuration parameters given to the Factor VM when booting it.
+ */
 struct vm_parameters {
   bool embedded_image;
   const vm_char* image_path;

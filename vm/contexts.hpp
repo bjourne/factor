@@ -14,12 +14,20 @@ enum context_object {
 
 static const cell stack_reserved = 1024;
 
+/**
+ * Represents an execution environment inside the Factor VM.
+ */
 struct context {
 
   // First 4 fields accessed directly by compiler. See basis/vm/vm.factor
 
-  /* Factor callstack pointers */
+  /**
+   * Factor callstack pointer
+   */
   void* callstack_top;
+  /**
+   * Factor callstack pointer
+   */
   void* callstack_bottom;
 
   /**
@@ -60,6 +68,9 @@ struct context {
 
   cell peek() { return *(cell*)datastack; }
 
+  /**
+   * Replaces the top item on the datastack with the given value.
+   */
   void replace(cell tagged) { *(cell*)datastack = tagged; }
 
   cell pop() {

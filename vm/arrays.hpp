@@ -1,5 +1,8 @@
 namespace factor {
 
+/**
+ * Gets the nth item of an array
+ */
 inline cell array_nth(array* array, cell slot) {
   FACTOR_ASSERT(slot < array_capacity(array));
   FACTOR_ASSERT(array->type() == ARRAY_TYPE);
