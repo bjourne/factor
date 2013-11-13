@@ -103,9 +103,12 @@ bool jit::emit_subprimitive(cell word_, bool tail_call_p, bool stack_frame_p) {
   return false;
 }
 
-/* Facility to convert compiled code offsets to quotation offsets.
-Call jit_compute_offset() with the compiled code offset, then emit
-code, and at the end jit->position is the quotation position. */
+/**
+ * Facility to convert compiled code offsets to quotation
+ * offsets. Call jit_compute_offset() with the compiled code offset,
+ * then emit code, and at the end jit->position is the quotation
+ * position.
+ */
 void jit::compute_position(cell offset_) {
   computing_offset_p = true;
   position = 0;

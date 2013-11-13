@@ -256,7 +256,7 @@ void factor_vm::load_image(vm_parameters* p) {
   special_objects[OBJ_IMAGE] = allot_alien(false_object, (cell)p->image_path);
 }
 
-/* Save the current image to disk */
+/** Save the current image to disk */
 bool factor_vm::save_image(const vm_char* saving_filename,
                            const vm_char* filename) {
   FILE* file;
