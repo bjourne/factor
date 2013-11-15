@@ -66,11 +66,10 @@ struct context {
   void fix_stacks();
   void scrub_stacks(gc_info* info, cell index);
 
+  /** Returns the top datastack element. */
   cell peek() { return *(cell*)datastack; }
 
-  /**
-   * Replaces the top item on the datastack with the given value.
-   */
+  /** Replaces the top item on the datastack with the given value. */
   void replace(cell tagged) { *(cell*)datastack = tagged; }
 
   cell pop() {

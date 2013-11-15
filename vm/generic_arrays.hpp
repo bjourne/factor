@@ -13,7 +13,7 @@ template <typename Array> cell array_size(Array* array) {
   return array_size<Array>(array_capacity(array));
 }
 
-/* Allocates memory */
+/** Allocates an uninitialized array with the given size. */
 template <typename Array>
 Array* factor_vm::allot_uninitialized_array(cell capacity) {
   Array* array = allot<Array>(array_size<Array>(capacity));

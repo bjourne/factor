@@ -271,13 +271,13 @@ struct boxed_float : object {
 */
 struct quotation : public object {
   static const cell type_number = QUOTATION_TYPE;
-  /* tagged */
+  /** tagged array of words making up this quotation */
   cell array;
   /* tagged */
   cell cached_effect;
   /* tagged */
   cell cache_counter;
-  /* UNTAGGED entry point; jump here to call quotation */
+  /** UNTAGGED entry point; jump here to call quotation */
   void* entry_point;
 
   /* defined in code_blocks.hpp */
