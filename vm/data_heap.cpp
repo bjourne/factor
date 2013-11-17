@@ -145,7 +145,11 @@ struct object_accumulator {
   }
 };
 
-/* Allocates memory */
+/**
+ * Returns a list of all objects on the data heap of the specified
+ * type.
+ * Allocates memory
+ */
 cell factor_vm::instances(cell type) {
   object_accumulator accum(type);
   each_object(accum);

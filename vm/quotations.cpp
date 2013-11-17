@@ -300,7 +300,7 @@ void* factor_vm::lazy_jit_compile_entry_point() {
 }
 
 /**
- * push a new quotation on the stack
+ * push a new quotation on the stack.
  * Allocates memory
  */
 void factor_vm::primitive_array_to_quotation() {

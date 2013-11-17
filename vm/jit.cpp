@@ -2,11 +2,6 @@
 
 namespace factor {
 
-/* Simple code generator used by:
-- quotation compiler (quotations.cpp),
-- megamorphic caches (dispatch.cpp),
-- polymorphic inline caches (inline_cache.cpp) */
-
 /* Allocates memory */
 jit::jit(code_block_type type, cell owner, factor_vm* vm)
     : type(type),

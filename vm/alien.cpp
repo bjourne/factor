@@ -2,8 +2,11 @@
 
 namespace factor {
 
-/* gets the address of an object representing a C pointer, with the
-intention of storing the pointer across code which may potentially GC. */
+/**
+ * gets the address of an object representing a C pointer, with the
+ * intention of storing the pointer across code which may potentially
+ * GC.
+ */
 char* factor_vm::pinned_alien_offset(cell obj) {
   switch (tagged<object>(obj).type()) {
     case ALIEN_TYPE: {
@@ -23,8 +26,9 @@ char* factor_vm::pinned_alien_offset(cell obj) {
   }
 }
 
-/* make an alien */
-/* Allocates memory */
+/**
+ * make an alien. Allocates memory
+ */
 cell factor_vm::allot_alien(cell delegate_, cell displacement) {
   if (displacement == 0)
     return delegate_;
@@ -51,8 +55,10 @@ cell factor_vm::allot_alien(void* address) {
   return allot_alien(false_object, (cell)address);
 }
 
-/* make an alien pointing at an offset of another alien */
-/* Allocates memory */
+/**
+ * make an alien pointing at an offset of another alien.
+ * Allocates memory
+ */
 void factor_vm::primitive_displaced_alien() {
   cell alien = ctx->pop();
   cell displacement = to_cell(ctx->pop());
@@ -105,8 +111,10 @@ void factor_vm::primitive_dlopen() {
   ctx->push(library.value());
 }
 
-/* look up a symbol in a native library */
-/* Allocates memory */
+/**
+ * look up a symbol in a native library.
+ * Allocates memory
+ */
 void factor_vm::primitive_dlsym() {
   data_root<object> library(ctx->pop(), this);
   data_root<byte_array> name(ctx->peek(), this);
@@ -125,8 +133,10 @@ void factor_vm::primitive_dlsym() {
     ctx->replace(allot_alien(ffi_dlsym(NULL, sym)));
 }
 
-/* look up a symbol in a native library */
-/* Allocates memory */
+/**
+ * look up a symbol in a native library.
+ * Allocates memory
+ */
 void factor_vm::primitive_dlsym_raw() {
   data_root<object> library(ctx->pop(), this);
   data_root<byte_array> name(ctx->peek(), this);
@@ -145,7 +155,9 @@ void factor_vm::primitive_dlsym_raw() {
     ctx->replace(allot_alien(ffi_dlsym_raw(NULL, sym)));
 }
 
-/* close a native library handle */
+/**
+ * close a native library handle
+ */
 void factor_vm::primitive_dlclose() {
   dll* d = untag_check<dll>(ctx->pop());
   if (d->handle != NULL)
@@ -160,7 +172,9 @@ void factor_vm::primitive_dll_validp() {
     ctx->replace(true_object);
 }
 
-/* gets the address of an object representing a C pointer */
+/**
+ * gets the address of an object representing a C pointer
+ */
 char* factor_vm::alien_offset(cell obj) {
   switch (tagged<object>(obj).type()) {
     case BYTE_ARRAY_TYPE:

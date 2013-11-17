@@ -271,7 +271,7 @@ void factor_vm::primitive_set_retainstack() {
   set_retainstack(ctx, untag_check<array>(ctx->pop()));
 }
 
-/* Used to implement call( */
+/** Used to implement call( */
 void factor_vm::primitive_check_datastack() {
   fixnum out = to_fixnum(ctx->pop());
   fixnum in = to_fixnum(ctx->pop());

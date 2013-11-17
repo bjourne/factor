@@ -148,7 +148,7 @@ struct object {
 struct array : public object {
   static const cell type_number = ARRAY_TYPE;
   static const cell element_size = sizeof(cell);
-  /* tagged */
+  /** tagged */
   cell capacity;
 
   cell* data() const { return (cell*)(this + 1); }
@@ -177,7 +177,7 @@ struct tuple_layout : public array {
 struct bignum : public object {
   static const cell type_number = BIGNUM_TYPE;
   static const cell element_size = sizeof(cell);
-  /* tagged */
+  /** tagged */
   cell capacity;
 
   cell* data() const { return (cell*)(this + 1); }
@@ -186,7 +186,7 @@ struct bignum : public object {
 struct byte_array : public object {
   static const cell type_number = BYTE_ARRAY_TYPE;
   static const cell element_size = 1;
-  /* tagged */
+  /** tagged */
   cell capacity;
 
 #ifndef FACTOR_64
@@ -221,15 +221,15 @@ struct code_block;
 */
 struct word : public object {
   static const cell type_number = WORD_TYPE;
-  /* TAGGED hashcode */
+  /** TAGGED hashcode */
   cell hashcode;
-  /* TAGGED word name */
+  /** TAGGED word name */
   cell name;
-  /* TAGGED word vocabulary */
+  /** TAGGED word vocabulary */
   cell vocabulary;
-  /* TAGGED definition */
+  /** TAGGED definition */
   cell def;
-  /* TAGGED property assoc for library code */
+  /** TAGGED property assoc for library code */
   cell props;
   /* TAGGED alternative entry point for direct non-tail calls. Used for inline
    * caching */
@@ -280,7 +280,7 @@ struct quotation : public object {
   /** UNTAGGED entry point; jump here to call quotation */
   void* entry_point;
 
-  /* defined in code_blocks.hpp */
+  /** defined in code_blocks.hpp */
   code_block* code() const;
 };
 
@@ -306,13 +306,9 @@ struct alien : public object {
 
 struct dll : public object {
   static const cell type_number = DLL_TYPE;
-  /**
-   * tagged byte array holding a C string
-   */
+  /** tagged byte array holding a C string */
   cell path;
-  /**
-   * OS-specific handle
-   */
+  /** OS-specific handle */
   void* handle;
 };
 

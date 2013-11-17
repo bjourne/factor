@@ -2,11 +2,13 @@
 
 namespace factor {
 
+/** Bound to kernel.private:special-object */
 void factor_vm::primitive_special_object() {
   fixnum n = untag_fixnum(ctx->peek());
   ctx->replace(special_objects[n]);
 }
 
+/** Bound to kernel.private:set-special-object */
 void factor_vm::primitive_set_special_object() {
   fixnum n = untag_fixnum(ctx->pop());
   cell value = ctx->pop();

@@ -1,5 +1,11 @@
 namespace factor {
 
+/**
+ * Simple code generator used by:
+ *   - quotation compiler (quotations.cpp),
+ *   - megamorphic caches (dispatch.cpp),
+ *   - polymorphic inline caches (inline_cache.cpp)
+ */
 struct jit {
   code_block_type type;
   data_root<object> owner;
