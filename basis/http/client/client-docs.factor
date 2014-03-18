@@ -56,9 +56,10 @@ HELP: http-get
 { $errors "Throws an error if the HTTP request fails." } ;
 
 HELP: http-get*
-{ $values { "url" "a " { $link url } " or " { $link string } } { "data" sequence } }
-{ $description "A variant of " { $link http-get } " that checks that the response was successful." }
-{ $errors "Throws an error if the HTTP request fails or if the status code is not between 200 and 299." } ;
+{ $values { "url" "a " { $link url } " or " { $link string } } { "response" response } { "data" sequence } }
+{ $description "Downloads the contents of a URL, but does not check the HTTP response code for success." } ;
+
+{ http-get http-get* } related-words
 
 HELP: http-post
 { $values { "post-data" object } { "url" "a " { $link url } " or " { $link string } } { "response" response } { "data" sequence } }
@@ -66,9 +67,10 @@ HELP: http-post
 { $errors "Throws an error if the HTTP request fails." } ;
 
 HELP: http-post*
-{ $values { "post-data" object } { "url" "a " { $link url } " or " { $link string } } { "data" sequence } }
-{ $description "A variant of " { $link http-post } " that checks that the response was successful." }
-{ $errors "Throws an error if the HTTP request fails or if the status code is not between 200 and 299." } ;
+{ $values { "post-data" object } { "url" "a " { $link url } " or " { $link string } } { "response" response } { "data" sequence } }
+{ $description "Submits an HTTP POST request, but does not check the HTTP response code for success." } ;
+
+{ http-post http-post* } related-words
 
 HELP: http-put
 { $values { "post-data" object } { "url" "a " { $link url } " or " { $link string } } { "response" response } { "data" sequence } }
@@ -76,9 +78,10 @@ HELP: http-put
 { $errors "Throws an error if the HTTP request fails." } ;
 
 HELP: http-put*
-{ $values { "post-data" object } { "url" "a " { $link url } " or " { $link string } } { "data" sequence } }
-{ $description "A variant of " { $link http-put } " that checks that the response was successful." }
-{ $errors "Throws an error if the HTTP request fails or if the status code is not between 200 and 299." } ;
+{ $values { "post-data" object } { "url" "a " { $link url } " or " { $link string } } { "response" response } { "data" sequence } }
+{ $description "Submits an HTTP PUT request, but does not check the HTTP response code for success." } ;
+
+{ http-put http-put* } related-words
 
 HELP: http-head
 { $values { "url" "a " { $link url } " or " { $link string } } { "response" response } { "data" sequence } }
@@ -86,9 +89,10 @@ HELP: http-head
 { $errors "Throws an error if the HTTP request fails." } ;
 
 HELP: http-head*
-{ $values { "url" "a " { $link url } " or " { $link string } } { "data" sequence } }
-{ $description "A variant of " { $link http-head } " that checks that the response was successful." }
-{ $errors "Throws an error if the HTTP request fails or if the status code is not between 200 and 299." } ;
+{ $values { "url" "a " { $link url } " or " { $link string } } { "response" response } { "data" sequence } }
+{ $description "Same as " { $link http-get* } " except that the server is not supposed to return a message-body in the response, as per RFC2616. However in practise, most web servers respond to GET and HEAD method calls with identical responses." } ;
+
+{ http-head http-head* } related-words
 
 HELP: http-delete
 { $values { "url" "a " { $link url } " or " { $link string } } { "response" response } { "data" sequence } }
@@ -96,9 +100,10 @@ HELP: http-delete
 { $errors "Throws an error if the HTTP request fails." } ;
 
 HELP: http-delete*
-{ $values { "url" "a " { $link url } " or " { $link string } } { "data" sequence } }
-{ $description "A variant of " { $link http-delete } " that checks that the response was successful." }
-{ $errors "Throws an error if the HTTP request fails or if the status code is not between 200 and 299." } ;
+{ $values { "url" "a " { $link url } " or " { $link string } } { "response" response } { "data" sequence } }
+{ $description "Requests that the origin server delete the resource identified by the URL, but does not check the HTTP response code for success." } ;
+
+{ http-delete http-delete* } related-words
 
 HELP: http-options
 { $values { "url" "a " { $link url } " or " { $link string } } { "response" response } { "data" sequence } }
@@ -106,9 +111,10 @@ HELP: http-options
 { $errors "Throws an error if the HTTP request fails." } ;
 
 HELP: http-options*
-{ $values { "url" "a " { $link url } " or " { $link string } } { "data" sequence } }
-{ $description "A variant of " { $link http-options } " that checks that the response was successful." }
-{ $errors "Throws an error if the HTTP request fails or if the status code is not between 200 and 299." } ;
+{ $values { "url" "a " { $link url } " or " { $link string } } { "response" response } { "data" sequence } }
+{ $description "Submits an HTTP OPTIONS request, but does not check the HTTP response code for success." } ;
+
+{ http-options http-options* } related-words
 
 HELP: http-trace
 { $values { "url" "a " { $link url } " or " { $link string } } { "response" response } { "data" sequence } }
@@ -116,37 +122,36 @@ HELP: http-trace
 { $errors "Throws an error if the HTTP request fails." } ;
 
 HELP: http-trace*
-{ $values { "url" "a " { $link url } " or " { $link string } } { "data" sequence } }
-{ $description "A variant of " { $link http-trace } " that checks that the response was successful." }
-{ $errors "Throws an error if the HTTP request fails or if the status code is not between 200 and 299." } ;
+{ $values { "url" "a " { $link url } " or " { $link string } } { "response" response } { "data" sequence } }
+{ $description "Submits an HTTP TRACE request, but does not check the HTTP response code for success." } ;
 
-HELP: with-http-get
-{ $values { "url" "a " { $link url } " or " { $link string } } { "quot" { $quotation "( chunk -- )" } } { "response" response } }
-{ $description "Downloads the contents of a URL. Chunks of data are passed to the quotation as they are read." }
-{ $errors "Throws an error if the HTTP request fails." } ;
-
-HELP: with-http-get*
-{ $values { "url" "a " { $link url } " or " { $link string } } { "quot" { $quotation "( chunk -- )" } } }
-{ $description "A variant of " { $link with-http-get } " that checks that the response was successful." }
-{ $errors "Throws an error if the HTTP request fails or if the status code is not between 200 and 299." } ;
+{ http-trace http-trace* } related-words
 
 HELP: http-request
 { $values { "request" request } { "response" response } { "data" sequence } }
-{ $description "Sends an HTTP request to an HTTP server, and reads the response." }
+{ $description "A variant of " { $link http-request* } " that checks that the response was successful." }
 { $errors "Throws an error if the HTTP request fails." } ;
 
 HELP: http-request*
-{ $values { "request" request } { "data" sequence } }
-{ $description "A variant of " { $link http-request } " that checks that the response was successful." }
-{ $errors "Throws an error if the HTTP request fails or if the status code is not between 200 and 299." } ;
+{ $values { "request" request } { "response" response } { "data" sequence } }
+{ $description "Sends an HTTP request to an HTTP server, and reads the response." } ;
 
 HELP: with-http-request
 { $values { "request" request } { "quot" { $quotation "( chunk -- )" } } { "response" response } }
+{ $description "A variant of " { $link with-http-request* } " that checks that the response was successful." } ;
+
+HELP: with-http-request*
+{ $values { "request" request } { "quot" { $quotation "( chunk -- )" } } { "response" response } }
 { $description "Sends an HTTP request to an HTTP server, and reads the response incrementally. Chunks of data are passed to the quotation as they are read. Does not throw an error if the HTTP request fails; to do so, call " { $link check-response } " on the " { $snippet "response" } "." } ;
+
+{ http-request http-request* with-http-request with-http-request* } related-words
 
 ARTICLE: "http.client.get" "GET requests with the HTTP client"
 "Basic usage involves passing a " { $link url } " and getting a " { $link response } " and data back:"
-{ $subsections http-get http-get* }
+{ $subsections
+    http-get
+    http-get*
+}
 "Utilities to retrieve a " { $link url } " and save the contents to a file:"
 { $subsections
     download
@@ -158,11 +163,10 @@ ARTICLE: "http.client.get" "GET requests with the HTTP client"
     http-request
     http-request*
 }
-"The " { $link http-get } " and " { $link http-request } " words output sequences. This is undesirable if the response data may be large. Another pair of words take a quotation instead, and pass the quotation chunks of data incrementally:"
+"The " { $link http-request } " and " { $link http-request* } " words output sequences. This is undesirable if the response data may be large. Another pair of words take a quotation instead, and pass the quotation chunks of data incrementally:"
 { $subsections
-    with-http-get
-    with-http-get*
     with-http-request
+    with-http-request*
 } ;
 
 ARTICLE: "http.client.post-data" "HTTP client post data"
