@@ -3,12 +3,10 @@
 namespace factor {
 
 void safepoint_state::enqueue_safepoint(factor_vm* parent) volatile {
-  printf("safepoint_state::enqueue_safepoint\n");
   parent->code->guard_safepoint();
 }
 
 void safepoint_state::enqueue_fep(factor_vm* parent) volatile {
-  printf("safepoint_state::enqueue_fep\n");
   if (parent->fep_p)
     fatal_error("Low-level debugger interrupted", 0);
   atomic::store(&fep_p, true);
@@ -34,7 +32,6 @@ void safepoint_state::enqueue_samples(factor_vm* parent, cell samples, cell pc,
 }
 
 void safepoint_state::handle_safepoint(factor_vm* parent, cell pc) volatile {
-  printf("safepoint_state::handle_safepoint\n");
   parent->code->unguard_safepoint();
   parent->faulting_p = false;
 

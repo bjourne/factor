@@ -132,9 +132,9 @@ long getpagesize() {
 }
 
 void code_heap::guard_safepoint() {
-  printf("code_heap::guard_safepoint\n");
   DWORD ignore;
-  if (!VirtualProtect(safepoint_page, getpagesize(), PAGE_NOACCESS, &ignore))
+  BOOL res = VirtualProtect(safepoint_page, getpagesize(), PAGE_NOACCESS, &ignore);
+  if (!res)
     fatal_error("Cannot protect safepoint guard page", (cell)safepoint_page);
 }
 
@@ -244,14 +244,10 @@ VM_C_API LONG exception_handler(PEXCEPTION_RECORD e, void* frame, PCONTEXT c,
 }
 
 VOID CALLBACK my_handler (ULONG_PTR dwParam) {
-	printf ("I'm here\n");
 }
 
 static BOOL WINAPI ctrl_handler(DWORD dwCtrlType) {
 
-  printf("i am ctrl_handler %d\n", boot_thread);
-
-  // std::cout << "ctrl_handler" << std::endl;
   switch (dwCtrlType) {
     case CTRL_C_EVENT: {
       /* The CtrlHandler runs in its own thread without stopping the main
@@ -261,12 +257,9 @@ static BOOL WINAPI ctrl_handler(DWORD dwCtrlType) {
       FACTOR_ASSERT(thread_vms.size() == 1);
       factor_vm* vm = thread_vms.begin()->second;
 
-      printf("QueueUserAPC\n");
-      // DWORD result = QueueUserAPC (my_handler, boot_thread, 0);
-      printf("QueueUserAPC DONE vm = %d\n", vm);
+      DWORD result = QueueUserAPC (my_handler, factor::boot_thread, 0);
 
       vm->safepoint.enqueue_fep(vm);
-      printf("handled...\n");
       return TRUE;
     }
     default:

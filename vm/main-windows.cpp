@@ -10,16 +10,19 @@ DWORD WINAPI wmain_thread(LPVOID lpParam) {
 }
 
 VM_C_API int wmain(int argc, wchar_t** argv) {
-  printf("wmain\n");
+  // printf("wmain\n");
   my_argc = argc;
   my_argv = argv;
   factor::boot_thread = CreateThread(NULL, 0, wmain_thread, NULL, 0, NULL);
-  printf("wmain: boot_thread = %d\n", factor::boot_thread);
+  // printf("wmain: boot_thread = %d\n", factor::boot_thread);
   WaitForSingleObject(factor::boot_thread, INFINITE);
-  return 0;
+
+  // printf("infinite wait is over\n");
+
+  // return 0;
   // factor::init_globals();
   // factor::start_standalone_factor(argc, argv);
-  // return 0;
+  return 0;
 }
 
 // HANDLE boot_thread;
