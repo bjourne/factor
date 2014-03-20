@@ -19,6 +19,8 @@
 /* Difference between Jan 1 00:00:00 1601 and Jan 1 00:00:00 1970 */
 #define EPOCH_OFFSET 0x019db1ded53e8000LL
 
+// extern HANDLE boot_thread;
+
 namespace factor {
 
 typedef wchar_t vm_char;
