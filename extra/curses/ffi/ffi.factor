@@ -1,7 +1,7 @@
 ! Copyright (C) 2008 Doug Coleman.
 ! See http://factorcode.org/license.txt for BSD license.
 USING: accessors alien alien.c-types alien.libraries
-alien.syntax classes.struct combinators kernel math system unix.types ;
+alien.syntax classes.struct combinators kernel math system libc.types ;
 IN: curses.ffi
 
 << "curses" {

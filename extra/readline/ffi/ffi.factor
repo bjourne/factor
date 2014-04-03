@@ -1,13 +1,13 @@
 ! Copyright (C) 2010 Erik Charlebois
 ! See http:// factorcode.org/license.txt for BSD license.
 USING: alien alien.c-types kernel alien.syntax classes.struct
-accessors libc math make unix.types namespaces system
+accessors libc libc.types math make namespaces system
 combinators alien.libraries ;
 IN: readline.ffi
 
 <<
 "readline" {
-    { [ os windows? ] [ "readline.dll" ] }
+    { [ os windows? ] [ "libreadline6.dll" ] }
     { [ os macosx? ] [ "libreadline.dylib"  ] }
     { [ os unix?  ] [ "libreadline.so" ] }
 } cond cdecl add-library

@@ -192,7 +192,7 @@ TYPEDEF: HANDLE              SERVICE_STATUS_HANDLE
 TYPEDEF: LONGLONG            USN
 TYPEDEF: UINT_PTR            WPARAM
 
-TYPEDEF: size_t socklen_t
+
 
 TYPEDEF: void* WNDPROC
 
@@ -271,7 +271,7 @@ TYPEDEF: void* PAINTSTRUCT
 
 STRUCT: POINT
     { x LONG }
-    { y LONG } ; 
+    { y LONG } ;
 
 STRUCT: SIZE
     { cx LONG }
