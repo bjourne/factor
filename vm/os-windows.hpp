@@ -6,7 +6,7 @@
 #endif
 
 #undef _WIN32_WINNT
-#define _WIN32_WINNT 0x0501  // For AddVectoredExceptionHandler
+#define _WIN32_WINNT 0x0600  // For AddVectoredExceptionHandler
 
 #include <windows.h>
 #include <shellapi.h>
