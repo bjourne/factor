@@ -5,7 +5,7 @@ alien.strings arrays assocs classes.struct command-line
 continuations destructors environment gdk.ffi gdk.gl.ffi
 gdk.pixbuf.ffi glib.ffi gobject-introspection.standard-types
 gobject.ffi gtk.ffi gtk.gl.ffi io io.encodings.binary
-io.encodings.utf8 io.files kernel libc literals locals math
+io.encodings.utf8 io.files io.pathnames kernel libc literals locals math
 math.bitwise math.order math.vectors namespaces sequences
 strings system threads ui ui.backend
 ui.backend.gtk.input-methods ui.backend.gtk.io ui.clipboards
@@ -225,7 +225,8 @@ CONSTANT: action-key-codes
 ! in the docs and tools.deploy.shaker.gtk-icon
 : get-icon-data ( -- byte-array/f )
     [
-        "resource:misc/icons/Factor_48x48.png" binary file-contents
+        install-prefix "share/factor/icons/Factor_48x48.png" append-path
+        binary file-contents
     ] [ drop f ] recover ;
 
 : load-icon ( -- )
