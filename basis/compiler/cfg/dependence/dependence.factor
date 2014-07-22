@@ -1,6 +1,6 @@
 ! Copyright (C) 2009, 2010 Daniel Ehrenberg.
 ! See http://factorcode.org/license.txt for BSD license.
-USING: accessors assocs combinators compiler.cfg.def-use
+USING: accessors arrays assocs combinators compiler.cfg.def-use
 compiler.cfg.instructions compiler.cfg.registers fry kernel
 locals namespaces sequences sets sorting math.vectors
 make math combinators.short-circuit vectors ;
@@ -37,22 +37,25 @@ M: node hashcode* nip number>> ;
 
 : ready? ( node -- ? ) precedes>> assoc-empty? ;
 
-:: precedes ( first second how -- )
-    how second first precedes>> set-at ;
+: vreg-introductors ( node -- assoc )
+    [ dup insn>> defs-vregs [ swap 2array ] with map ] map concat ;
 
-:: add-data-edges ( nodes -- )
-    ! This builds up def-use information on the fly, since
-    ! we only care about local def-use
-    H{ } clone :> definers
-    nodes [| node |
-        node insn>> defs-vregs [ node swap definers set-at ] each
-        node insn>> uses-vregs [ definers at [ node +data+ precedes ] when* ] each
-    ] each ;
+: add-edge ( node-to node-from type -- )
+    -rot precedes>> set-at ;
+
+: add-data-edge ( introductors successor vreg -- )
+    swapd of +data+ add-edge ;
+
+: add-data-edges ( nodes -- )
+    ! This builds up def-use information on the fly, since we only
+    ! care about local def-use
+    [ vreg-introductors ] keep [
+        dup insn>> uses-vregs [ add-data-edge ] 2with each
+    ] with each ;
 
 UNION: stack-insn ##peek ##replace ##replace-imm ;
 
-UNION: slot-insn
-    ##read ##write ;
+UNION: slot-insn ##read ##write ;
 
 UNION: memory-insn
     ##allot
@@ -62,22 +65,19 @@ UNION: memory-insn
     alien-call-insn
     slot-insn ;
 
-: chain ( node var -- )
-    dup get [
-        pick +control+ precedes
-    ] when*
-    set ;
+: (add-control-edge) ( stack-locs successor loc -- )
+    swapd 2dup of [
+        [ pick ] dip +control+ add-edge
+    ] when* swap set-at ;
 
-GENERIC: add-control-edge ( node insn -- )
+GENERIC: add-control-edge ( stack-locs successor insn -- )
 
-M: stack-insn add-control-edge loc>> chain ;
-
-M: memory-insn add-control-edge drop memory-insn chain ;
-
-M: object add-control-edge 2drop ;
+M: stack-insn add-control-edge loc>> (add-control-edge) ;
+M: memory-insn add-control-edge drop memory-insn (add-control-edge) ;
+M: object add-control-edge 3drop ;
 
 : add-control-edges ( nodes -- )
-    [ [ dup insn>> add-control-edge ] each ] with-scope ;
+    H{ } swap [ dup insn>> add-control-edge ] with each ;
 
 : set-follows ( nodes -- )
     [
@@ -153,6 +153,6 @@ ERROR: node-missing-children trees nodes ;
 
 : build-fan-in-trees ( -- )
     make-trees verify-trees [
-        -1/0. >>parent-index 
+        -1/0. >>parent-index
         calculate-registers drop
     ] each ;
