@@ -79,7 +79,7 @@ ERROR: unknown-type-error type ;
 
 : get-type-info ( data-type -- info )
     qualified-type-name dup type-infos get-global at
-    [ ] [ unknown-type-error ] ?if ;
+    [ unknown-type-error ] ?unless ;
 
 : find-type-info ( data-type -- info/f )
     qualified-type-name type-infos get-global at ;

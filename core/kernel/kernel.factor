@@ -52,6 +52,12 @@ DEFER: if
 : ?if ( ..a default cond true: ( ..a cond -- ..b ) false: ( ..a default -- ..b ) -- ..b )
     pick [ drop [ drop ] 2dip call ] [ 2nip call ] if ; inline
 
+: ?when ( ..a default cond true: ( ..a cond -- ..b ) -- ..b )
+    over [ nip call ] [ drop nip ] if ; inline
+
+: ?unless ( ..a default cond false: ( ..a default -- ..b ) -- ..b )
+    over [ drop nip ] [ nip call ] if ; inline
+
 ! Dippers.
 ! Not declared inline because the compiler special-cases them
 

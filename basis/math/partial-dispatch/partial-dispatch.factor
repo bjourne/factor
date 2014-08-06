@@ -18,8 +18,8 @@ M: math-partial integer-op-input-classes
 ERROR: bad-integer-op word ;
 
 M: word integer-op-input-classes
-    dup "input-classes" word-prop
-    [ ] [ bad-integer-op ] ?if ;
+    dup "input-classes" word-prop [ bad-integer-op ] ?unless ;
+    ! [ ] [ bad-integer-op ] ?if ;
 
 : generic-variant ( op -- generic-op/f )
     dup "derived-from" word-prop [ first ] [ ] ?if ;

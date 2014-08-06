@@ -10,10 +10,10 @@ IN: help
 GENERIC: word-help* ( word -- content )
 
 : word-help ( word -- content )
-    dup "help" word-prop [ ] [
+    dup "help" word-prop [
         dup word-help* dup
         [ swap 2array 1array ] [ 2drop f ] if
-    ] ?if ;
+    ] ?unless ;
 
 : $predicate ( element -- )
     { { "object" object } { "?" boolean } } $values
@@ -56,7 +56,7 @@ M: word article-name name>> ;
 
 M: word article-title
     dup [ parsing-word? ] [ symbol? ] bi or [
-        name>> 
+        name>>
     ] [
         [ unparse ]
         [ stack-effect [ effect>string " " prepend ] [ "" ] if* ] bi
