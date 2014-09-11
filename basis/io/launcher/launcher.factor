@@ -206,9 +206,8 @@ PRIVATE>
     <process-reader*> drop ; inline
 
 : with-process-reader ( desc encoding quot -- )
-    [ <process-reader*> ] dip
-    swap [ with-input-stream ] dip
-    wait-for-success ; inline
+    [ <process-reader*> ] dip swap
+    '[ @ _ wait-for-success ] with-input-stream ; inline
 
 : <process-writer*> ( desc encoding -- stream process )
     [
