@@ -1,9 +1,9 @@
 ! Copyright (C) 2013 Doug Coleman.
 ! See http://factorcode.org/license.txt for BSD license.
 USING: accessors arrays combinators combinators.smart
-io.encodings.utf8 io.files kernel math math.order math.parser
-memoize sequences sorting.slots splitting splitting.monotonic
-strings io.pathnames calendar words ;
+continuations io.directories io.encodings.utf8 io.files kernel math math.order
+math.parser memoize sequences sorting.slots splitting splitting.monotonic
+strings io.pathnames calendar unix words ;
 IN: unix.linux.proc
 
 ! /proc/*
@@ -291,6 +291,14 @@ M: string proc-pid-path ( pid-string string -- path )
 
 : proc-pid-first-line ( pid string -- string )
     proc-pid-path proc-first-line ;
+
+: read-symbolic-link-safe ( path -- path/f )
+    [ read-symbolic-link ] [ 2drop f ] recover ;
+
+: proc-pid-fds ( pid -- fds )
+    "fd" proc-pid-path dup directory-files [
+        [ append-path read-symbolic-link-safe ] keep string>number 2array
+    ] with map [ first ] filter ;
 
 : parse-proc-pid-cmdline ( pid -- string/f )
     "cmdline" proc-pid-path proc-first-line ;
