@@ -5,6 +5,7 @@ namespace factor {
 void factor_vm::dispatch_signal_handler(cell* sp, cell* pc, cell handler) {
   if (!code->seg->in_segment_p(*pc) ||
       *sp < ctx->callstack_seg->start + stack_reserved) {
+    FACTOR_PRINT("%s", "foreign");
     /* Fault came from the VM, foreign code, a callstack overflow, or
        we don't have enough callstack room to try the resumable
        handler. Cut the callstack down to the shallowest Factor stack
@@ -23,6 +24,7 @@ void factor_vm::dispatch_signal_handler(cell* sp, cell* pc, cell handler) {
     ctx->callstack_top = frame_top;
     *pc = handler;
   } else {
+    FACTOR_PRINT("%s", "from factor code");
     signal_resumable = true;
     /* Fault came from Factor, and we've got a good callstack. Route
        the signal handler through the resumable signal handler subprimitive. */

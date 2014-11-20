@@ -8,9 +8,19 @@ nursery_collector::nursery_collector(factor_vm* parent)
                                                      nursery_policy(parent)) {}
 
 void factor_vm::collect_nursery() {
+
+  factor_print_p = true;
   /* Copy live objects from the nursery (as determined by the root set and
      marked cards in aging and tenured) to aging space. */
   nursery_collector collector(this);
+
+  FACTOR_PRINT(
+      "nursery[%p, %" PRIuPTR "], "
+      "data->nursery[%p, %" PRIuPTR "]",
+      (void *)nursery.start,
+      nursery.occupied_space(),
+      (void *)data->nursery->start,
+      data->nursery->occupied_space());
 
   collector.trace_roots();
   collector.trace_contexts();

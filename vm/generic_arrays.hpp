@@ -21,10 +21,11 @@ Array* factor_vm::allot_uninitialized_array(cell capacity) {
   return array;
 }
 
-template <typename Array>
-bool factor_vm::reallot_array_in_place_p(Array* array, cell capacity) {
-  return nursery.contains_p(array) && capacity <= array_capacity(array);
-}
+// template <typename Array>
+// bool factor_vm::reallot_array_in_place_p(Array* array, cell capacity) {
+//   return false;
+//   // return nursery.contains_p(array) && capacity <= array_capacity(array);
+// }
 
 /* Allocates memory (sometimes) */
 template <typename Array>
@@ -34,7 +35,8 @@ Array* factor_vm::reallot_array(Array* array_, cell capacity) {
   if (array_capacity(array.untagged()) == capacity)
     return array.untagged();
 
-  if (reallot_array_in_place_p(array.untagged(), capacity)) {
+  if (data->nursery->contains_p(array.untagged()) &&
+      capacity <= array_capacity(array.untagged())) {
     array->capacity = tag_fixnum(capacity);
     return array.untagged();
   } else {
@@ -50,6 +52,12 @@ Array* factor_vm::reallot_array(Array* array_, cell capacity) {
 
     return new_array;
   }
+
+  // if (reallot_array_in_place_p(array.untagged(), capacity)) {
+  //   array->capacity = tag_fixnum(capacity);
+  //   return array.untagged();
+  // } else {
+    //  }
 }
 
 }

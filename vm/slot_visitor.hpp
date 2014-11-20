@@ -2,6 +2,7 @@ namespace factor {
 
 /* Size of the object pointed to by an untagged pointer */
 template <typename Fixup> cell object::size(Fixup fixup) const {
+
   if (free_p())
     return ((free_heap_block*)this)->size();
 
@@ -50,7 +51,8 @@ template <typename Fixup> cell object::binary_payload_start(Fixup fixup) const {
   if (free_p())
     return 0;
 
-  switch (type()) {
+  cell t = type();
+  switch (t) {
     /* these objects do not refer to other objects at all */
     case FLOAT_TYPE:
     case BYTE_ARRAY_TYPE:
@@ -79,6 +81,8 @@ template <typename Fixup> cell object::binary_payload_start(Fixup fixup) const {
     case WRAPPER_TYPE:
       return sizeof(wrapper);
     default:
+      FACTOR_PRINT("type %"PRIuPTR", forwarding %d, header %"PRIxPTR,
+                   t, forwarding_pointer_p(), header);
       critical_error("Invalid header in binary_payload_start", (cell)this);
       return 0; /* can't happen */
   }
@@ -154,6 +158,9 @@ void slot_visitor<Fixup>::visit_object_array(cell* start, cell* end) {
 
 template <typename Fixup>
 void slot_visitor<Fixup>::visit_slots(object* ptr, cell payload_start) {
+
+  // FACTOR_PRINT("ptr %p, start %lu, type %lu, forward %d, free %d",
+  //              ptr, payload_start, ptr->type(), ptr->forwarding_pointer_p(), ptr->free_p());
   cell* slot = (cell*)ptr;
   cell* end = (cell*)((cell)ptr + payload_start);
 
@@ -164,6 +171,7 @@ void slot_visitor<Fixup>::visit_slots(object* ptr, cell payload_start) {
 }
 
 template <typename Fixup> void slot_visitor<Fixup>::visit_slots(object* obj) {
+
   if (obj->type() == CALLSTACK_TYPE)
     visit_callstack_object((callstack*)obj);
   else

@@ -64,9 +64,17 @@ bool factor_vm::reallot_string_in_place_p(string* str, cell capacity) {
 string* factor_vm::reallot_string(string* str_, cell capacity) {
   data_root<string> str(str_, this);
 
+  FACTOR_PRINT_RAW("str_ %p, capacity %lu, in_place %d, aux %d ",
+                   str_, capacity,
+                   reallot_string_in_place_p(str_, capacity),
+                   to_boolean(str_->aux));
+  print_factor_string(str_);
+  printf("\n");
+
   if (reallot_string_in_place_p(str.untagged(), capacity)) {
     str->length = tag_fixnum(capacity);
 
+    FACTOR_PRINT("%s", "reallot_string in place");
     if (to_boolean(str->aux)) {
       byte_array* aux = untag<byte_array>(str->aux);
       aux->capacity = tag_fixnum(capacity * 2);
@@ -99,9 +107,16 @@ string* factor_vm::reallot_string(string* str_, cell capacity) {
 
 /* Allocates memory */
 void factor_vm::primitive_resize_string() {
+
   data_root<string> str(ctx->pop(), this);
   str.untag_check(this);
+
   cell capacity = unbox_array_size();
+
+  // FACTOR_PRINT_MARK_RAW;
+  // print_factor_string(str.untagged());
+  // printf("\n");
+
   ctx->push(tag<string>(reallot_string(str.untagged(), capacity)));
 }
 

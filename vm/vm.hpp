@@ -16,7 +16,8 @@ struct factor_vm {
   /* Spare context -- for callbacks */
   context* spare_ctx;
 
-  /* New objects are allocated here */
+  /* New objects are allocated here, use the data->nursery reference
+     instead from c++ code. */
   nursery_space nursery;
 
   /* Add this to a shifted address to compute write barrier offsets */
@@ -328,11 +329,17 @@ struct factor_vm {
   }
 
   template <typename Iterator> inline void each_object(Iterator& iterator) {
+    FACTOR_PRINT_MARK;
     gc_off = true;
 
     each_object(data->tenured, iterator);
     each_object(data->aging, iterator);
+
+    FACTOR_ASSERT(data->nursery->occupied_space() == 0);
+
     each_object(data->nursery, iterator);
+
+    FACTOR_PRINT("%s", "DONE");
 
     gc_off = false;
   }
@@ -395,8 +402,8 @@ struct factor_vm {
 
   // generic arrays
   template <typename Array> Array* allot_uninitialized_array(cell capacity);
-  template <typename Array>
-  bool reallot_array_in_place_p(Array* array, cell capacity);
+  //template <typename Array>
+  //bool reallot_array_in_place_p(Array* array, cell capacity);
   template <typename Array> Array* reallot_array(Array* array_, cell capacity);
 
   // debug

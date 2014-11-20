@@ -1,5 +1,7 @@
 #include "master.hpp"
 
+bool factor_print_p = false;
+
 namespace factor {
 
 factor_vm::factor_vm(THREADHANDLE thread)

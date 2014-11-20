@@ -80,10 +80,12 @@ struct slot_become_fixup : no_fixup {
 
   object* fixup_data(object* old) {
     std::map<object*, object*>::const_iterator iter = become_map->find(old);
-    if (iter != become_map->end())
+    if (iter != become_map->end()) {
       return iter->second;
-    else
+    }
+    else {
       return old;
+    }
   }
 };
 
@@ -93,7 +95,9 @@ struct object_become_visitor {
   explicit object_become_visitor(slot_visitor<slot_become_fixup>* workhorse)
       : workhorse(workhorse) {}
 
-  void operator()(object* obj) { workhorse->visit_slots(obj); }
+  void operator()(object* obj) {
+    workhorse->visit_slots(obj);
+  }
 };
 
 struct code_block_become_visitor {
@@ -121,7 +125,12 @@ struct code_block_write_barrier_visitor {
 
 /* classes.tuple uses this to reshape tuples; tools.deploy.shaker uses this
    to coalesce equal but distinct quotations and wrappers. */
+
 void factor_vm::primitive_become() {
+
+  factor_print_p = true;
+  FACTOR_PRINT_MARK;
+
   array* new_objects = untag_check<array>(ctx->pop());
   array* old_objects = untag_check<array>(ctx->pop());
 
@@ -148,6 +157,7 @@ void factor_vm::primitive_become() {
     workhorse.visit_contexts();
 
     object_become_visitor object_visitor(&workhorse);
+
     each_object(object_visitor);
 
     code_block_become_visitor code_block_visitor(&workhorse);

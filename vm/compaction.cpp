@@ -281,6 +281,9 @@ struct object_grow_heap_updater {
 
 /* Compact just the code heap, after growing the data heap */
 void factor_vm::collect_compact_code_impl(bool trace_contexts_p) {
+
+  FACTOR_PRINT_MARK;
+
   /* Figure out where blocks are going to go */
   mark_bits<code_block>* code_forwarding_map = &code->allocator->state;
   code_forwarding_map->compute_forwarding();
@@ -328,7 +331,7 @@ void factor_vm::collect_growing_heap(cell requested_size,
                                      bool trace_contexts_p) {
   /* Grow the data heap and copy all live objects to the new heap. */
   data_heap* old = data;
-  set_data_heap(data->grow(requested_size));
+  set_data_heap(data->grow(&nursery, requested_size));
   collect_mark_impl(trace_contexts_p);
   collect_compact_code_impl(trace_contexts_p);
   code->flush_icache();

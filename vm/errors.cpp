@@ -58,7 +58,7 @@ void factor_vm::general_error(vm_error_type error, cell arg1_, cell arg2_) {
   if (!current_gc && to_boolean(special_objects[ERROR_HANDLER_QUOT])) {
 #ifdef FACTOR_DEBUG
     /* Doing a GC here triggers all kinds of funny errors */
-    primitive_compact_gc();
+    //primitive_compact_gc();
 #endif
 
     /* Now its safe to allocate and GC */

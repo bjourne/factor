@@ -3,8 +3,13 @@
 namespace factor {
 
 std::ostream& operator<<(std::ostream& out, const string* str) {
-  for (cell i = 0; i < string_capacity(str); i++)
-    out << (char)str->data()[i];
+  for (cell i = 0; i < string_capacity(str); i++) {
+    char ch = (char)str->data()[i];
+    if (ch == '\0') {
+      ch = '.';
+    }
+    out << ch;
+  }
   return out;
 }
 

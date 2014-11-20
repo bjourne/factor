@@ -27,6 +27,7 @@
 #include <errno.h>
 
 #include <fcntl.h>
+#include <inttypes.h>
 #include <limits.h>
 #include <math.h>
 #include <stdio.h>
@@ -90,6 +91,8 @@
 
 /* Forward-declare this since it comes up in function prototypes */
 namespace factor { struct factor_vm; }
+
+extern bool factor_print_p;
 
 /* Factor headers */
 #include "assert.hpp"

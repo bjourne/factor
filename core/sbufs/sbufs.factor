@@ -42,7 +42,9 @@ M: string like
         dup sbuf? [
             [ length ] [ underlying>> ] bi
             2dup length eq?
-            [ nip dup reset-string-hashcode ] [ resize-string ] if
+            [ nip dup reset-string-hashcode ] [
+                resize-string
+            ] if
         ] [ >string ] if
     ] unless ; inline
 
